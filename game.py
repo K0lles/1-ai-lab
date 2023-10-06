@@ -3,6 +3,7 @@ def print_board(board):
         print(" | ".join(row))
         print("-" * 9)
 
+
 def check_win(board, player):
     for row in board:
         if all(cell == player for cell in row):
@@ -17,8 +18,10 @@ def check_win(board, player):
 
     return False
 
+
 def is_board_full(board):
     return all(cell != " " for row in board for cell in row)
+
 
 def get_empty_cells(board):
     empty_cells = []
@@ -27,6 +30,7 @@ def get_empty_cells(board):
             if board[row][col] == " ":
                 empty_cells.append((row, col))
     return empty_cells
+
 
 def minimax(board, depth, is_maximizing):
     scores = {"X": -1, "O": 1, "tie": 0}
@@ -55,6 +59,7 @@ def minimax(board, depth, is_maximizing):
             best_score = min(score, best_score)
     return best_score
 
+
 def best_move(board):
     best_score = -float("inf")
     best_move = None
@@ -67,9 +72,10 @@ def best_move(board):
             best_move = (row, col)
     return best_move
 
+
 def play_game():
     board = [[" " for _ in range(3)] for _ in range(3)]
-    print("Welcome to Tic-Tac-Toe!")
+    print("Welcome to Hrestyky Nolyky!")
 
     while True:
         print_board(board)
@@ -110,6 +116,7 @@ def play_game():
             print_board(board)
             print("It's a tie!")
             break
+
 
 if __name__ == "__main__":
     play_game()
