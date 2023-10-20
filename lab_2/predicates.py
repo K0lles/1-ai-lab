@@ -112,7 +112,6 @@ class Rectangle(Square):
         )
 
 
-# Example usage
 triangle = Triangle([(0, 0), (0, 3), (4, 0)])
 square = Square([(0, 0), (0, 2), (2, 2), (2, 0)])
 circle = Circle([(0, 0), 5])
@@ -120,11 +119,11 @@ rectangle = Rectangle([(0, 0), (0, 3), (4, 0), (4, 3)])
 
 
 if __name__ == "__main__":
-    print(triangle.is_equal_sides)  # False
-    print(triangle.has_right_angle)  # True
-    print(square.is_equal_sides)  # True
-    print(square.has_right_angle)  # True
-    print(circle.is_equal_sides)  # Circle always has equal sides.
-    print(circle.has_right_angle)  # A circle can't have a right angle.
-    print(rectangle.is_equal_sides)  # True
-    print(rectangle.has_right_angle)  # True
+    print(triangle.is_equal_sides)
+    print(triangle.has_right_angle)
+    print(square.is_equal_sides)
+    print(square.has_right_angle)
+    print(circle.is_equal_sides)
+    print(circle.has_right_angle)
+    print(rectangle.is_equal_sides)
+    print(rectangle.has_right_angle)
