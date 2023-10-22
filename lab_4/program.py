@@ -18,6 +18,13 @@ class SemanticNetwork:
                 related_nodes.add(object_)
         return related_nodes
 
+    def get_related_by_index(self, aim: str, index: int) -> set:
+        related_nodes = set()
+        for relationship in self.relationships:
+            if aim == relationship[index]:
+                related_nodes.add(relationship)
+        return related_nodes
+
     def query(self, subject, predicate, object_):
         # Запит до семантичної мережі
         if subject and predicate and object_:
@@ -30,8 +37,12 @@ class SemanticNetwork:
                 if (node, predicate, object_) in self.relationships:
                     related_nodes.add(node)
             return related_nodes
+        elif subject:
+            return self.get_related_by_index(subject, 0)
+        elif object_:
+            return self.get_related_by_index(subject, 2)
         else:
-            return None
+            return self.get_related_by_index(predicate, 1)
 
 
 # Створення семантичної мережі
@@ -69,3 +80,5 @@ print(network.query(None, "постачає", "Магазин2"))
 
 print("Всі товари, які замовляють в усіх магазинах:")
 print(network.query(None, "замовляє", None))
+
+print(network.query(None, "постачає", None))
