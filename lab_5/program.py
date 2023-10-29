@@ -1,3 +1,6 @@
+from collections import defaultdict
+
+
 class RestaurantFrame:
     def __init__(
         self,
@@ -7,9 +10,9 @@ class RestaurantFrame:
         hours,
         menu,
         reservation,
-        rating,
-        specials,
-        contact,
+        rating=None,
+        specials=None,
+        contact=None,
     ):
         self.name = name
         self.cuisine = cuisine
@@ -26,34 +29,22 @@ restaurants_db = []
 
 
 def add_restaurant(
-    name, cuisine, address, hours, menu, reservation, rating, specials, contact
+    name,
+    cuisine,
+    address,
+    hours,
+    menu,
+    reservation,
+    rating=None,
+    specials=None,
+    contact=None,
 ):
-    restaurant = RestaurantFrame(
-        name, cuisine, address, hours, menu, reservation, rating, specials, contact
-    )
+    restaurant = RestaurantFrame(name, cuisine, address, hours, menu, reservation, rating, specials, contact)
     restaurants_db.append(restaurant)
     print(f"Ресторан '{name}' додано до бази даних.")
 
 
-def find_restaurant_by_name(name):
-    for restaurant in restaurants_db:
-        if restaurant.name == name:
-            return restaurant
-    return None
-
-
-# Реалізуємо рекурсивний пошук за типом кухні
-def find_restaurants_by_cuisine(cuisine, restaurants=None, index=0):
-    if restaurants is None:
-        restaurants = []
-    if index >= len(restaurants_db):
-        return restaurants
-    if restaurants_db[index].cuisine == cuisine:
-        restaurants.append(restaurants_db[index])
-    return find_restaurants_by_cuisine(cuisine, restaurants, index + 1)
-
-
-# Приклади використання програми
+# Приклади використання програми з урахуванням невизначеності
 add_restaurant(
     "Ресторан 1",
     "Італійська",
@@ -66,25 +57,55 @@ add_restaurant(
     ("123-456-7890", "email1@example.com"),
 )
 add_restaurant(
-    "Ресторан 2",
-    "Японська",
-    "Адреса 2",
-    "10:00 - 23:00",
-    ["Суші", "Роли"],
-    False,
+    "Ресторан 2", "Японська", "Адреса 2", "10:00 - 23:00", ["Суші", "Роли"], False
+)
+add_restaurant(
+    "Ресторан 3",
+    "Італійська",
+    "Адреса 1",
+    "8:00 - 22:00",
+    ["Піца", "Паста", "Суші"],
+    True,
     4.0,
-    "Знижка на суші",
-    ("987-654-3210", "email2@example.com"),
+    "Спеціальна акція",
+    ("123-456-7890", "email1@example.com"),
 )
 
-restaurant = find_restaurant_by_name("Ресторан 1")
-if restaurant:
-    print(f"Назва: {restaurant.name}")
-    print(f"Тип кухні: {restaurant.cuisine}")
-    # Виведення інших атрибутів
 
-italian_restaurants = find_restaurants_by_cuisine("Італійська")
-if italian_restaurants:
-    print("Італійські ресторани:")
-    for italian_restaurant in italian_restaurants:
-        print(italian_restaurant.name)
+def find_restaurants_by_multiple_criteria(criteria, excluded=None) -> tuple[set, set]:
+    if excluded is None:
+        excluded = []
+
+    matching_restaurants = set()
+
+    if len(criteria) == len(excluded):
+        print("Не знайдено жодних співпадінь.")
+        return set(), set()
+
+    for key, value in criteria.items():
+        if not key in excluded:
+            has_intersection = False
+            for restaurant in restaurants_db:
+                if getattr(restaurant, key, None) == value:
+                    has_intersection = True
+                    matching_restaurants.add(restaurant)
+            if not has_intersection:
+                print(f"Збігів за критерієм {key} не знайдено. Його виключено із пошуку.")
+                excluded.append(key)
+
+    if matching_restaurants:
+        return matching_restaurants, set(criteria.keys()) - set(excluded)
+
+    if not matching_restaurants:
+        return find_restaurants_by_multiple_criteria(criteria=criteria, excluded=excluded)
+
+
+search_criteria = {"cuisine": "Італійська", "rating": 4.0, "address": "Адреса 1"}
+
+
+matching_multiple_criteria_restaurants, searching_criteria = find_restaurants_by_multiple_criteria(search_criteria)
+if matching_multiple_criteria_restaurants:
+    print("Ресторани, що відповідають критеріям пошуку:")
+    print(searching_criteria)
+    for restaurant in matching_multiple_criteria_restaurants:
+        print(restaurant.name)
