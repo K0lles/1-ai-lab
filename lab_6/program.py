@@ -24,10 +24,10 @@ heat_cool_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
 temperature_control = ctrl.ControlSystemSimulation(heat_cool_ctrl)
 
 # Введення даних та обчислення
-temperature_value = 35
+temperature_value = 45
 desired_temperature_value = 50
 
 temperature_control.input['temperature'] = temperature_value
 temperature_control.input['desired_temperature'] = desired_temperature_value
 temperature_control.compute()
-print("Рівень подачі тепла/охолодження:", temperature_control.output['heat_cool'])
+print("Рівень подачі охолодження:", temperature_control.output['heat_cool'])
