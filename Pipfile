@@ -8,6 +8,7 @@ numpy = "*"
 scikit-fuzzy = "*"
 matplotlib = "*"
 opencv-python = "*"
+tensorflow = "*"
 
 [dev-packages]
 
